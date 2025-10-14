@@ -939,3 +939,48 @@ body.productos-page main {
   color: #333;
 }
 
+/* === MENÚ HAMBURGUESA RESPONSIVE === */
+.menu-btn {
+  display: none;
+  background: transparent;
+  border: none;
+  font-size: 30px;
+  cursor: pointer;
+  color: #333;
+}
+
+/* --- Vista móvil --- */
+@media (max-width: 900px) {
+  .menu-btn {
+    display: block;
+  }
+
+  .header-center .nav-menu {
+    display: none;
+    flex-direction: column;
+    background: #fff;
+    position: absolute;
+    top: 100px; /* se muestra debajo del header */
+    left: 0;
+    right: 0;
+    padding: 20px;
+    text-align: center;
+    border-top: 2px solid #f7c8d0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+
+  .header-center .nav-menu.open {
+    display: flex;
+  }
+
+  .header-center .nav-list {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .nav-item a {
+    font-size: 17px;
+    font-weight: 600;
+  }
+}

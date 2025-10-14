@@ -31,8 +31,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const desc = document.createElement("p");
     desc.classList.add("descripcion-producto");
     desc.textContent = producto.descripcion;
-    document.querySelector(".info").appendChild(desc);
-  }
+  document.querySelector(".info").appendChild(desc);
+}
 
 
   // Control de cantidad
@@ -44,7 +44,18 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Agregar al carrito
   document.getElementById("agregar").onclick = () => {
-    agregarAlCarrito(producto, parseInt(cantidad.value)); 
+    const carrito = JSON.parse(localStorage.getItem("carrito") || "[]");
+    const existente = carrito.find(p => p.codigo === producto.codigo);
+    const cantidadNueva = parseInt(cantidad.value);
+
+    if (existente) {
+      existente.CANTIDAD += cantidadNueva;
+    } else {
+      carrito.push({ ...producto, CANTIDAD: cantidadNueva });
+    }
+
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+    actualizarContadorCarrito(carrito.length);
     alert("Producto agregado al carrito 🛒");
   };
 

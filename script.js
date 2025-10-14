@@ -28,26 +28,11 @@ async function cargarProductos() {
     });
 
     mostrarProductos(productos);
-    return productos;
+    return productos
   } catch (error) {
     console.error("Error cargando productos:", error);
   }
 }
-
-function agregarAlCarrito(producto, cantidad = 1) {
-  const carrito = JSON.parse(localStorage.getItem("carrito") || "[]");
-  const existente = carrito.find(p => p.codigo === producto.codigo);
-
-  if (existente) {
-    existente.CANTIDAD += cantidad;
-  } else {
-    carrito.push({ ...producto, CANTIDAD: cantidad });
-  }
-
-  localStorage.setItem("carrito", JSON.stringify(carrito));
-  actualizarContadorCarrito(carrito.length);
-}
-
 
 // === MOSTRAR PRODUCTOS EN EL CATÁLOGO ===
 function mostrarProductos(lista) {
@@ -291,3 +276,12 @@ window.addEventListener("load", () => {
   btnDer.addEventListener("click", () => moverSlider(1));
 });
 
+// === MENÚ HAMBURGUESA ===
+const menuBtn = document.getElementById("menuBtn");
+const navMenu = document.querySelector(".nav-menu");
+
+if (menuBtn && navMenu) {
+  menuBtn.addEventListener("click", () => {
+    navMenu.classList.toggle("open");
+  });
+}
