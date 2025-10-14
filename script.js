@@ -28,10 +28,26 @@ async function cargarProductos() {
     });
 
     mostrarProductos(productos);
+    return productos;
   } catch (error) {
     console.error("Error cargando productos:", error);
   }
 }
+
+function agregarAlCarrito(producto, cantidad = 1) {
+  const carrito = JSON.parse(localStorage.getItem("carrito") || "[]");
+  const existente = carrito.find(p => p.codigo === producto.codigo);
+
+  if (existente) {
+    existente.CANTIDAD += cantidad;
+  } else {
+    carrito.push({ ...producto, CANTIDAD: cantidad });
+  }
+
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+  actualizarContadorCarrito(carrito.length);
+}
+
 
 // === MOSTRAR PRODUCTOS EN EL CATÁLOGO ===
 function mostrarProductos(lista) {
@@ -63,7 +79,9 @@ function mostrarProductos(lista) {
         }
       </div>
     `;
-
+    card.addEventListener("click", () => {
+      window.location.href = `producto.html?codigo=${p.codigo}`;
+    });
     contenedor.appendChild(card);
   });
 }
