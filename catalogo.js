@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     return { codigo, marca, producto, color, uso, descripcion, precio, descuento, stock, categoria };
   });
 
+  //hola 
   // Función para renderizar productos
   function mostrarProductos(categoria) {
     contenedor.innerHTML = "";
