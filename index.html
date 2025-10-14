@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ColorLive - Pinturería</title>
+    <!-- Enlazamos el archivo de estilos. Lo completaremos en el siguiente paso -->
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+
+    <!-- HEADER FIJO: contiene logo, búsqueda, carrito y ubicación -->
+    <header class="site-header">
+      <div class="header-top-content">
+        <!-- Lado izquierdo: logo y (pronto) botón hamburger -->
+        <div class="header-left">
+          <!-- Logo de la empresa. Reemplaza src por tu imagen real -->
+          <div class="logo">
+            <a href="#inicio">
+              <img src="images/logoTransparente1.png" alt="ColorLive - Pinturas y Revestimientos">
+            </a>
+          </div>
+        </div>
+
+        <!-- Barra de navegación principal (centro) -->
+        <div class="header-center">
+          <nav class="nav-menu" aria-label="Menú principal">
+            <ul class="nav-list">
+              <li class="nav-item"><a href="#inicio" >Inicio</a></li>
+              <li class="nav-item"><a href="#nosotros">Nosotros</a></li>
+              <li class="nav-item has-dropdown">
+                <a href="#productos" aria-haspopup="true" aria-expanded="false">Productos</a>
+                <ul class="dropdown" role="menu" aria-label="Submenú Productos">
+                  <li role="none"><a role="menuitem" href="productos.html?categoria=pinturas" >Aerosoles</a></li>
+                  <li role="none"><a role="menuitem" href="productos.html?categoria=pinturas">Pinturas</a></li>
+                  <li role="none"><a role="menuitem" href="productos.html?categoria=pinturas">Accesorios</a></li>
+                  <li role="none"><a role="menuitem" href="productos.html?categoria=pinturas">Todos los productos</a></li>
+                </ul>
+              </li>
+              <!--<li class="nav-item"><a href="#colores">Colores</a></li>-->
+              <li class="nav-item"><a href="#encontranos">Encontranos</a></li>
+            </ul>
+          </nav>
+        </div>
+
+        <!-- Caja de búsqueda: el usuario escribe y se muestran sugerencias (derecha) -->
+        <div class="header-right">
+          <div class="search-container">
+          <!-- El id 'searchInput' será usado por JavaScript para detectar escritura -->
+          <input type="text" id="searchInput" class="search-box" placeholder="Buscar productos, marcas o códigos..." aria-label="Buscar productos">
+          <button class="search-btn" aria-label="Buscar">
+            <img src="images/lupa.png" alt="Buscar" width="18" height="18">
+          </button>
+          <!-- Contenedor para las sugerencias dinámicas -->
+          <div id="suggestions" class="search-suggestions" role="listbox" aria-label="Sugerencias de búsqueda"></div>
+            </div>
+
+          <!-- Botones de acción: carrito y ubicación -->
+          <div class="header-actions">
+            <!-- Carrito: el span con id 'cartCount' mostrará la cantidad de items -->
+            <button class="icon-btn" onclick="mostrarCarrito()" aria-label="Ver carrito">
+              <img src="images/carrito.png" alt="Carrito" class="icon-img">
+              <!-- Por defecto vacío: no mostrar número hasta que haya items -->
+              <span class="cart-count" id="cartCount"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Contenido de ejemplo para que puedas hacer scroll y ver el header fijo -->
+    <main>
+
+      <section id="inicio" class="hero">
+  <div class="banner-container">
+    <div class="banner-slide fade">
+      <img src="images/banner1.jpg" alt="Renova tus ambientes con el poder del color">
+    </div>
+    <div class="banner-slide fade">
+      <img src="images/banner2.png" alt="3 cuotas sin interes en tienda fiscia con cuenta DNI">
+    </div>
+    <div class="banner-slide fade">
+      <img src="images/banner3.png" alt="Combinaciones de colores modernos">
+    </div>
+
+    <!-- Botones de control manual -->
+    <button class="prev" aria-label="Anterior">&#10094;</button>
+    <button class="next" aria-label="Siguiente">&#10095;</button>
+
+    <!-- Indicadores -->
+    <div class="banner-dots">
+      <span class="dot" data-index="1"></span>
+      <span class="dot" data-index="2"></span>
+      <span class="dot" data-index="3"></span>
+    </div>
+  </div>
+</section>
+
+<section class="categorias-inicio">
+  <h2 class="titulo-seccion">Nuestras categorías</h2>
+  <div class="categorias-grid">
+
+    <div class="categoria-item">
+      <a href="productos.html?categoria=pinturas">
+        <img src="images/cat-pinturas.png" alt="Pinturas">
+        <div class="categoria-texto">
+          <h3>Pinturas</h3>
+          <p>Interiores, exteriores y más</p>
+        </div>
+      </a>
+    </div>
+
+    <div class="categoria-item">
+      <a href="productos.html?categoria=aerosoles">
+        <img src="images/cat-aerosoles.png" alt="Aerosoles">
+        <div class="categoria-texto">
+          <h3>Aerosoles</h3>
+          <p>Colores vibrantes y resistentes</p>
+        </div>
+      </a>
+    </div>
+
+    <div class="categoria-item">
+      <a href="productos.html?categoria=accesorios">
+        <img src="images/cat-accesorios.png" alt="Accesorios">
+        <div class="categoria-texto">
+          <h3>Accesorios</h3>
+          <p>Rodillos, pinceles y herramientas</p>
+        </div>
+      </a>
+    </div>
+
+  </div>
+</section>
+
+
+
+
+<section id="productos" class="productos-slider">
+  <h2>Pinturas y accesorios</h2>
+  
+  <div class="slider-contenedor">
+    <button class="btn-flecha btn-izquierda" id="btn-izquierda">‹</button>
+
+    <!-- Este div es el que tiene que desplazarse -->
+    <div id="productos-container" class="slider-productos"></div>
+
+    <button class="btn-flecha btn-derecha" id="btn-derecha">›</button>
+  </div>
+</section>
+
+
+
+      <section id="nosotros" class="about">
+        <div class="temp-content">
+          <h2>Nosotros</h2>
+          <p>Somos ColorLive, expertos en pinturas y revestimientos. (Texto de ejemplo)</p>
+        </div>
+      </section>
+
+      <section id="productos" class="productos-ejemplo">
+        <div class="temp-content">
+          <h2>Productos destacados</h2>
+          <p>Se mostrarán tarjetas de producto con imagen, nombre y precio.</p>
+          <!-- Repetimos contenido para simular página larga -->
+          <div style="height:800px;"></div>
+        </div>
+      </section>
+
+      <section id="aerosoles" class="productos-categoria">
+        <div class="temp-content">
+          <h2>Aerosoles</h2>
+          <p>Listado de aerosoles.</p>
+        </div>
+      </section>
+
+      <section id="pinturas" class="productos-categoria">
+        <div class="temp-content">
+          <h2>Pinturas</h2>
+          <p>Listado de pinturas.</p>
+        </div>
+      </section>
+
+      <section id="accesorios" class="productos-categoria">
+        <div class="temp-content">
+          <h2>Accesorios</h2>
+          <p>Listado de accesorios (rodillos, pinceles, etc.).</p>
+        </div>
+      </section>
+
+      <section id="colores" class="colores">
+        <div class="temp-content">
+          <h2>Colores</h2>
+          <p>Explora nuestra paleta de colores y tendencias.</p>
+        </div>
+      </section>
+
+      <section id="encontranos" class="encontranos">
+        <div class="temp-content">
+          <h2>Encontranos</h2>
+          <p>Dirección, mapa y formas de contacto.</p>
+        </div>
+      </section>
+
+      <section class="productos-ejemplo">
+        <div class="temp-content">
+          <h2>Productos destacados</h2>
+          <p>Se mostrarán tarjetas de producto con imagen, nombre y precio.</p>
+          <!-- Repetimos contenido para simular página larga -->
+          <div style="height:1200px;"></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Enlazamos el script. Lo completaremos en el siguiente paso -->
+    <script src="script.js"></script>
+  </body>
+</html>
