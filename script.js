@@ -517,3 +517,11 @@ if (menuBtn && navMenu) {
     navMenu.classList.toggle("open");
   });
 }
+
+// --- LIMPIAR CARRITO AL CERRAR LA PESTAÑA O EL NAVEGADOR ---
+window.addEventListener("beforeunload", (event) => {
+  if (!performance.getEntriesByType("navigation")[0].type.includes("reload")) {
+    // si NO fue una recarga, limpia el carrito (pestaña/navegador cerrado)
+    sessionStorage.removeItem("carrito");
+  }
+});
