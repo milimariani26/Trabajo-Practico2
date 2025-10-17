@@ -74,10 +74,9 @@ function mostrarProductos(lista) {
 document.addEventListener("DOMContentLoaded", cargarProductos);
 
 
-// Referencias del DOM
-
-const suggestions = document.getElementById('suggestions');
-const cartCount = document.getElementById('cartCount');
+// Referencias del DOM (se asignan cuando el DOM está listo)
+let suggestions = null;
+let cartCount = null;
 
 // === SISTEMA DE CARRITO (unificado) ===
 // Usamos sessionStorage para que el carrito sobreviva a recargas, pero se pierda
@@ -107,6 +106,10 @@ function agregarAlCarrito(producto, cantidad = 1) {
   if (!codigo) return;
 
   const existente = carrito.find(p => String(p.codigo) === String(codigo));
+
+  const precioBase = Number(producto.precio);
+  const descuento = Number(producto.descuento) || 0;
+  const precioFinal = precioBase - (precioBase * descuento / 100);
   if (existente) {
     existente.cantidad = (Number(existente.cantidad) || 0) + Number(cantidad);
   } else {
@@ -114,7 +117,7 @@ function agregarAlCarrito(producto, cantidad = 1) {
       codigo: codigo,
       producto: producto.producto || producto.PRODUCTO || '',
       marca: producto.marca || producto.MARCA || '',
-      precio: Number(producto.precio || producto.PRECIO) || 0,
+      precio: precioFinal,
       descuento: Number(producto.descuento || producto.DESCUENTO) || 0,
       cantidad: Number(cantidad) || 1
     });
@@ -228,8 +231,15 @@ document.querySelectorAll('.icon-btn[aria-label="Ver carrito"]').forEach(btn => 
   });
 });
 
-// Inicializa el contador al cargar la página
-document.addEventListener("DOMContentLoaded", actualizarContadorCarrito);
+// Inicialización relacionada con el DOM
+document.addEventListener('DOMContentLoaded', () => {
+  // asignar referencias dependientes del DOM
+  suggestions = document.getElementById('suggestions');
+  cartCount = document.getElementById('cartCount');
+  // configurar handlers de búsqueda y actualizar contador
+  setupSearchHandlers();
+  actualizarContadorCarrito();
+});
 
 // --- BÚSQUEDA CON SUGERENCIAS ---
 let suggestionIndex = -1;
@@ -246,7 +256,7 @@ function setupSearchHandlers(){
 function onSearchInput(e){
   const q = e.target.value.toLowerCase().trim();
   if (!q){
-    suggestions.classList.remove('active');
+    if (suggestions) suggestions.classList.remove('active');
     currentSuggestions = [];
     suggestionIndex = -1;
     return;
@@ -313,12 +323,14 @@ function updateSuggestionFocus(){
 }
 
 function mostrarSugerencias(items) {
+  if (!suggestions) return;
   suggestions.innerHTML = '';
   suggestions.classList.add('active');
   if (!items || items.length === 0) {
     suggestions.innerHTML = '<div class="suggestion-list"><div class="suggestion-item">No se encontraron productos</div></div>';
     return;
   }
+
 
   // Heading
   const popular = document.createElement('div');
@@ -355,8 +367,9 @@ function mostrarSugerencias(items) {
 function seleccionarProducto(p) {
   // Agrega el producto usando la función unificada y cierra sugerencias
   agregarAlCarrito(p, 1);
-  searchInput.value = '';
-  suggestions.classList.remove('active');
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) searchInput.value = '';
+  if (suggestions) suggestions.classList.remove('active');
   alert(`Agregaste al carrito:\n${p.producto} - $${(Number(p.precio)||0).toLocaleString()}`);
 }
 
