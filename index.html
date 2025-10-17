@@ -64,6 +64,7 @@
             <!-- Carrito: el span con id 'cartCount' mostrará la cantidad de items -->
             <button class="icon-btn" onclick="mostrarCarrito()" aria-label="Ver carrito">
               <img src="images/carrito.png" alt="Carrito" class="icon-img">
+              <i class="fa fa-shopping-cart"></i>
               <!-- Por defecto vacío: no mostrar número hasta que haya items -->
               <span class="cart-count" id="cartCount"></span>
             </button>
@@ -75,8 +76,23 @@
     <!-- Contenido de ejemplo para que puedas hacer scroll y ver el header fijo -->
     <main>
 
-      <section id="inicio" class="hero">
-  <div class="banner-container">
+    <!-- Carrito (modal/drawer) -->
+    <div id="cartModal" class="cart-modal" aria-hidden="true">
+      <div class="cart-backdrop" id="cartBackdrop"></div>
+      <aside class="cart-panel" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+        <button class="cart-close" id="cartClose" aria-label="Cerrar carrito">×</button>
+        <h3 id="cartTitle">Tu carrito</h3>
+        <div id="cartItems" class="cart-items"></div>
+        <div class="cart-footer">
+          <div id="cartTotal" class="cart-total">Total: $0</div>
+          <div class="cart-actions">
+            <button id="cartCheckout" class="btn-primary">Pagar</button>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <script src="script.js"></script>
     <div class="banner-slide fade">
       <img src="images/banner1.jpg" alt="Renova tus ambientes con el poder del color">
     </div>

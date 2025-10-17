@@ -79,70 +79,286 @@ document.addEventListener("DOMContentLoaded", cargarProductos);
 const suggestions = document.getElementById('suggestions');
 const cartCount = document.getElementById('cartCount');
 
-// Contador simple de carrito (solo demostración)
-let carrito = [];
+// === SISTEMA DE CARRITO (unificado) ===
+let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
-// Escucha la caja de búsqueda y filtra en tiempo real
-const searchInput = document.getElementById('searchInput');
-searchInput.addEventListener('input', function() {
-  const termino = this.value.toLowerCase();
-  const resultados = productos.filter(p =>
-    p.producto.toLowerCase().includes(termino) ||
-    p.marca.toLowerCase().includes(termino) ||
-    (p.color && p.color.toLowerCase().includes(termino))
-  );
-
-  mostrarProductos(resultados);
-});
-
-
-function mostrarSugerencias(items) {
-  suggestions.innerHTML = '';
-  if (!items || items.length === 0) {
-    suggestions.innerHTML = '<div class="suggestion-item">No se encontraron productos</div>';
-    suggestions.classList.add('active');
-    return;
-  }
-
-  items.forEach(p => {
-    const div = document.createElement('div');
-    div.className = 'suggestion-item';
-    div.innerHTML = `<div class="suggestion-name">${p.producto}</div><div class="suggestion-info">${p.marca} • $${p.precio.toLocaleString()}</div>`;
-    div.addEventListener('click', () => seleccionarProducto(p));
-    suggestions.appendChild(div);
-  });
-  suggestions.classList.add('active');
+function guardarCarrito() {
+  localStorage.setItem("carrito", JSON.stringify(carrito));
 }
 
-function seleccionarProducto(p) {
-  // Demo: agregamos al carrito y cerramos sugerencias
-  carrito.push(p);
-  actualizarContadorCarrito(carrito.length);
-  searchInput.value = '';
-  suggestions.classList.remove('active');
-  alert(`Agregaste al carrito:\n${p.producto} - $${p.precio.toLocaleString()}`);
+function actualizarContadorCarrito() {
+  const cartCountEl = document.getElementById("cartCount");
+  if (!cartCountEl) return;
+  const total = carrito.reduce((acc, item) => acc + (Number(item.cantidad) || 0), 0);
+  // si total es 0 dejamos el badge vacío para que CSS :empty lo oculte
+  cartCountEl.textContent = total > 0 ? String(total) : '';
+}
+
+function agregarAlCarrito(producto, cantidad = 1) {
+  if (!producto) return;
+  // soporta objetos con keys en minúsculas (desde CSV) o en mayúsculas (desde otras partes)
+  const codigo = producto.codigo || producto.CODIGO || producto.codigo === 0 ? String(producto.codigo || producto.CODIGO) : null;
+  if (!codigo) return;
+
+  const existente = carrito.find(p => String(p.codigo) === String(codigo));
+  if (existente) {
+    existente.cantidad = (Number(existente.cantidad) || 0) + Number(cantidad);
+  } else {
+    carrito.push({
+      codigo: codigo,
+      producto: producto.producto || producto.PRODUCTO || '',
+      marca: producto.marca || producto.MARCA || '',
+      precio: Number(producto.precio || producto.PRECIO) || 0,
+      descuento: Number(producto.descuento || producto.DESCUENTO) || 0,
+      cantidad: Number(cantidad) || 1
+    });
+  }
+
+  guardarCarrito();
+  actualizarContadorCarrito();
 }
 
 function mostrarCarrito() {
-  if (carrito.length === 0) {
-    alert('El carrito está vacío');
+  if (!carrito || carrito.length === 0) {
+    // abrir modal vacío
+    openCartModal();
+    renderCartPanel();
     return;
   }
-  let texto = '🛒 Carrito:\n\n';
-  carrito.forEach((p, i) => texto += `${i+1}. ${p.producto} - $${p.precio.toLocaleString()}\n`);
-  alert(texto);
+  openCartModal();
+  renderCartPanel();
 }
 
+/* ---- Cart modal UI ---- */
+const cartModal = document.getElementById('cartModal');
+const cartBackdrop = document.getElementById('cartBackdrop');
+const cartClose = document.getElementById('cartClose');
+const cartItemsEl = document.getElementById('cartItems');
+const cartTotalEl = document.getElementById('cartTotal');
 
-function actualizarContadorCarrito(n) {
-  if (!cartCount) return;
-  if (!n || n === 0) {
-    // dejar vacío para que CSS :empty lo oculte
-    cartCount.textContent = '';
-  } else {
-    cartCount.textContent = String(n);
+function openCartModal(){
+  if (!cartModal) return;
+  cartModal.classList.add('open');
+  cartModal.setAttribute('aria-hidden','false');
+}
+
+function closeCartModal(){
+  if (!cartModal) return;
+  cartModal.classList.remove('open');
+  cartModal.setAttribute('aria-hidden','true');
+}
+
+if (cartBackdrop) cartBackdrop.addEventListener('click', closeCartModal);
+if (cartClose) cartClose.addEventListener('click', closeCartModal);
+
+function renderCartPanel(){
+  if (!cartItemsEl) return;
+  cartItemsEl.innerHTML = '';
+  if (!carrito || carrito.length === 0){
+    cartItemsEl.innerHTML = '<p>Tu carrito está vacío</p>';
+    cartTotalEl.textContent = 'Total: $0';
+    return;
+  }
+  carrito.forEach((item, idx) => {
+    const row = document.createElement('div');
+    row.className = 'cart-item';
+    row.innerHTML = `
+      <img src="images/${item.codigo}.jpg" alt="${item.producto}">
+      <div class="meta">
+        <h4>${item.producto}</h4>
+        <p>${item.marca || ''}</p>
+        <div class="qty-controls">
+          <button class="qty-decrease" data-idx="${idx}">-</button>
+          <span class="qty-num">${item.cantidad}</span>
+          <button class="qty-increase" data-idx="${idx}">+</button>
+          <button class="cart-remove" data-idx="${idx}">Eliminar</button>
+        </div>
+      </div>
+      <div class="precio">$${((Number(item.precio)||0) * (Number(item.cantidad)||0)).toLocaleString()}</div>
+    `;
+    cartItemsEl.appendChild(row);
+  });
+
+  // attach handlers
+  cartItemsEl.querySelectorAll('.qty-increase').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const i = Number(e.currentTarget.dataset.idx);
+      carrito[i].cantidad = (Number(carrito[i].cantidad) || 0) + 1;
+      guardarCarrito();
+      renderCartPanel();
+      actualizarContadorCarrito();
+    });
+  });
+  cartItemsEl.querySelectorAll('.qty-decrease').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const i = Number(e.currentTarget.dataset.idx);
+      if ((Number(carrito[i].cantidad) || 0) > 1) carrito[i].cantidad = Number(carrito[i].cantidad) - 1;
+      else carrito.splice(i,1);
+      guardarCarrito();
+      renderCartPanel();
+      actualizarContadorCarrito();
+    });
+  });
+  cartItemsEl.querySelectorAll('.cart-remove').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const i = Number(e.currentTarget.dataset.idx);
+      carrito.splice(i,1);
+      guardarCarrito();
+      renderCartPanel();
+      actualizarContadorCarrito();
+    });
+  });
+
+  const total = carrito.reduce((acc,p) => acc + ((Number(p.precio)||0) * (Number(p.cantidad)||0)), 0);
+  cartTotalEl.textContent = `Total: $${total.toLocaleString()}`;
+}
+
+// abrir carrito al hacer click en el icono
+document.querySelectorAll('.icon-btn[aria-label="Ver carrito"]').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    openCartModal();
+    renderCartPanel();
+  });
+});
+
+// Inicializa el contador al cargar la página
+document.addEventListener("DOMContentLoaded", actualizarContadorCarrito);
+
+// --- BÚSQUEDA CON SUGERENCIAS ---
+let suggestionIndex = -1;
+let currentSuggestions = [];
+
+function setupSearchHandlers(){
+  const searchInput = document.getElementById('searchInput');
+  if (!searchInput) return;
+
+  searchInput.addEventListener('input', onSearchInput);
+  searchInput.addEventListener('keydown', onSearchKeyDown);
+}
+
+function onSearchInput(e){
+  const q = e.target.value.toLowerCase().trim();
+  if (!q){
+    suggestions.classList.remove('active');
+    currentSuggestions = [];
+    suggestionIndex = -1;
+    return;
+  }
+
+  // buscar por nombre, marca o código
+  currentSuggestions = productos.filter(p =>
+    (p.producto && p.producto.toLowerCase().includes(q)) ||
+    (p.marca && p.marca.toLowerCase().includes(q)) ||
+    (p.codigo && String(p.codigo).toLowerCase().includes(q))
+  ).slice(0,8);
+
+  mostrarSugerencias(currentSuggestions);
+  suggestionIndex = -1;
+}
+
+function onSearchKeyDown(e){
+  if (!suggestions.classList.contains('active')){
+    if (e.key === 'Enter'){
+      // sin sugerencias visibles, navegar al primer resultado si existe
+      const q = e.target.value.toLowerCase().trim();
+      if (!q) return;
+      const res = productos.filter(p => (p.producto && p.producto.toLowerCase().includes(q)) || (p.marca && p.marca.toLowerCase().includes(q)) || (p.codigo && String(p.codigo).toLowerCase().includes(q)));
+      if (res && res.length > 0) window.location.href = `producto.html?codigo=${res[0].codigo}`;
+    }
+    return;
+  }
+
+  const max = currentSuggestions.length - 1;
+  if (e.key === 'ArrowDown'){
+    e.preventDefault();
+    suggestionIndex = Math.min(suggestionIndex + 1, max);
+    updateSuggestionFocus();
+    return;
+  }
+  if (e.key === 'ArrowUp'){
+    e.preventDefault();
+    suggestionIndex = Math.max(suggestionIndex - 1, 0);
+    updateSuggestionFocus();
+    return;
+  }
+  if (e.key === 'Enter'){
+    e.preventDefault();
+    if (suggestionIndex >= 0 && currentSuggestions[suggestionIndex]){
+      window.location.href = `producto.html?codigo=${currentSuggestions[suggestionIndex].codigo}`;
+    } else if (currentSuggestions.length > 0){
+      window.location.href = `producto.html?codigo=${currentSuggestions[0].codigo}`;
+    }
+    return;
+  }
+  if (e.key === 'Escape'){
+    suggestions.classList.remove('active');
+    suggestionIndex = -1;
   }
 }
+
+function updateSuggestionFocus(){
+  const items = suggestions.querySelectorAll('.suggestion-item');
+  items.forEach((it, idx) => {
+    it.classList.toggle('focused', idx === suggestionIndex);
+    it.setAttribute('aria-selected', idx === suggestionIndex ? 'true' : 'false');
+    if (idx === suggestionIndex) it.scrollIntoView({block: 'nearest'});
+  });
+}
+
+function mostrarSugerencias(items) {
+  suggestions.innerHTML = '';
+  suggestions.classList.add('active');
+  if (!items || items.length === 0) {
+    suggestions.innerHTML = '<div class="suggestion-list"><div class="suggestion-item">No se encontraron productos</div></div>';
+    return;
+  }
+
+  // Heading
+  const popular = document.createElement('div');
+  popular.className = 'suggestion-heading';
+  popular.textContent = 'Productos';
+  suggestions.appendChild(popular);
+
+  const list = document.createElement('div');
+  list.className = 'suggestion-list';
+
+  items.forEach((p, idx) => {
+    const div = document.createElement('div');
+    div.className = 'suggestion-item product-suggestion';
+    div.setAttribute('role','option');
+    div.setAttribute('data-codigo', p.codigo);
+    div.innerHTML = `
+      <img src="images/${p.codigo}.jpg" alt="${p.producto}">
+      <div class="meta">
+        <h4>${p.producto}</h4>
+        <p>${p.marca} • $${(Number(p.precio)||0).toLocaleString()}</p>
+      </div>
+    `;
+    div.addEventListener('click', () => window.location.href = `producto.html?codigo=${p.codigo}`);
+    div.addEventListener('mouseover', () => { suggestionIndex = idx; updateSuggestionFocus(); });
+    list.appendChild(div);
+  });
+
+  suggestions.appendChild(list);
+}
+
+// set up search handlers after products are loaded
+document.addEventListener('DOMContentLoaded', () => {
+  // if productos already loaded (from cargarProductos), setup immediately
+  setupSearchHandlers();
+});
+
+function seleccionarProducto(p) {
+  // Agrega el producto usando la función unificada y cierra sugerencias
+  agregarAlCarrito(p, 1);
+  searchInput.value = '';
+  suggestions.classList.remove('active');
+  alert(`Agregaste al carrito:\n${p.producto} - $${(Number(p.precio)||0).toLocaleString()}`);
+}
+
+
+/* legacy actualizarContadorCarrito removed — use the unified implementation above */
 
 // Cerrar sugerencias al hacer click fuera
 document.addEventListener('click', function(e) {

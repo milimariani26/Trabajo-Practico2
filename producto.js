@@ -44,18 +44,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Agregar al carrito
   document.getElementById("agregar").onclick = () => {
-    const carrito = JSON.parse(localStorage.getItem("carrito") || "[]");
-    const existente = carrito.find(p => p.codigo === producto.codigo);
-    const cantidadNueva = parseInt(cantidad.value);
-
-    if (existente) {
-      existente.CANTIDAD += cantidadNueva;
-    } else {
-      carrito.push({ ...producto, CANTIDAD: cantidadNueva });
-    }
-
-    localStorage.setItem("carrito", JSON.stringify(carrito));
-    actualizarContadorCarrito(carrito.length);
+    agregarAlCarrito(producto, parseInt(cantidad.value));
     alert("Producto agregado al carrito 🛒");
   };
 

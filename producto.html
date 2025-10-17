@@ -130,6 +130,22 @@
     <p>© 2025 ColorLive — Todos los derechos reservados</p>
   </div>
 </footer>
+<!-- Carrito (modal/drawer) -->
+<div id="cartModal" class="cart-modal" aria-hidden="true">
+  <div class="cart-backdrop" id="cartBackdrop"></div>
+  <aside class="cart-panel" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+    <button class="cart-close" id="cartClose" aria-label="Cerrar carrito">×</button>
+    <h3 id="cartTitle">Tu carrito</h3>
+    <div id="cartItems" class="cart-items"></div>
+    <div class="cart-footer">
+      <div id="cartTotal" class="cart-total">Total: $0</div>
+      <div class="cart-actions">
+        <button id="cartCheckout" class="btn-primary">Pagar</button>
+      </div>
+    </div>
+  </aside>
+</div>
+
 <script src="script.js"></script>
 <script src="producto.js"></script>
 </body>
