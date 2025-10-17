@@ -80,10 +80,16 @@ const suggestions = document.getElementById('suggestions');
 const cartCount = document.getElementById('cartCount');
 
 // === SISTEMA DE CARRITO (unificado) ===
-let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+// Usamos sessionStorage para que el carrito sobreviva a recargas, pero se pierda
+// cuando el usuario cierra la pestaña/ventana (cumple el requisito pedido).
+let carrito = JSON.parse(sessionStorage.getItem("carrito")) || [];
 
 function guardarCarrito() {
-  localStorage.setItem("carrito", JSON.stringify(carrito));
+  try {
+    sessionStorage.setItem("carrito", JSON.stringify(carrito));
+  } catch (e) {
+    console.warn('No se pudo guardar el carrito en sessionStorage:', e);
+  }
 }
 
 function actualizarContadorCarrito() {
@@ -344,10 +350,7 @@ function mostrarSugerencias(items) {
 }
 
 // set up search handlers after products are loaded
-document.addEventListener('DOMContentLoaded', () => {
-  // if productos already loaded (from cargarProductos), setup immediately
-  setupSearchHandlers();
-});
+// Nota: mantenemos el setup de búsqueda en su propio listener más abajo
 
 function seleccionarProducto(p) {
   // Agrega el producto usando la función unificada y cierra sugerencias
