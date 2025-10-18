@@ -222,6 +222,98 @@ function renderCartPanel(){
   cartTotalEl.textContent = `Total: $${total.toLocaleString()}`;
 }
 
+// === CHECKOUT / PAGO ===
+function renderCheckoutForm(){
+  if (!cartItemsEl) return;
+  if (!carrito || carrito.length === 0){
+    alert('El carrito está vacío. Agrega productos antes de pagar.');
+    return;
+  }
+
+  // construir resumen de la izquierda y formulario a la derecha
+  const total = carrito.reduce((acc,p) => acc + ((Number(p.precio)||0) * (Number(p.cantidad)||0)), 0);
+
+  const container = document.createElement('div');
+  container.className = 'checkout-grid';
+
+  const left = document.createElement('div');
+  left.className = 'checkout-summary';
+  const list = document.createElement('div');
+  list.className = 'checkout-items-list';
+  carrito.forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'checkout-item';
+    row.innerHTML = `
+      <img src="images/${item.codigo}.jpg" alt="${item.producto}">
+      <div class="meta">
+        <strong>${item.producto}</strong>
+        <div>${item.cantidad} x $${(Number(item.precio)||0).toLocaleString()}</div>
+      </div>
+      <div class="line-price">$${(((Number(item.precio)||0) * (Number(item.cantidad)||0))).toLocaleString()}</div>
+    `;
+    list.appendChild(row);
+  });
+  const tot = document.createElement('div');
+  tot.className = 'checkout-total';
+  tot.textContent = `Total: $${total.toLocaleString()}`;
+  left.appendChild(list);
+  left.appendChild(tot);
+
+  const right = document.createElement('div');
+  right.className = 'checkout-form';
+  right.innerHTML = `
+    <form id="checkoutForm">
+      <h3>Datos del comprador</h3>
+      <label>Nombre completo<br><input type="text" id="cf-name" required></label>
+      <label>Email<br><input type="email" id="cf-email" required></label>
+      <label>Dirección<br><input type="text" id="cf-address"></label>
+      <h4>Método de pago</h4>
+      <label><input type="radio" name="cf-pay" value="mercadopago" checked> Mercado Pago</label><br>
+      <label><input type="radio" name="cf-pay" value="tarjeta"> Tarjeta</label>
+      <div class="checkout-actions">
+        <button type="submit" id="cf-pay-btn" class="btn-primary">Pagar</button>
+      </div>
+    </form>
+  `;
+
+  container.appendChild(left);
+  container.appendChild(right);
+
+  cartItemsEl.innerHTML = '';
+  cartItemsEl.appendChild(container);
+  // actualizar total visual
+  if (cartTotalEl) cartTotalEl.textContent = `Total: $${total.toLocaleString()}`;
+
+  // bind form submit
+  const form = document.getElementById('checkoutForm');
+  if (form){
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      const name = document.getElementById('cf-name')?.value?.trim();
+      const email = document.getElementById('cf-email')?.value?.trim();
+      const payMethod = form.querySelector('input[name="cf-pay"]:checked')?.value;
+      if (!name || !email || !payMethod){
+        alert('Por favor completa tu nombre, email y selecciona un método de pago.');
+        return;
+      }
+
+      // Simular pago exitoso
+      alert('Compra realizada con éxito');
+
+      // Vaciar carrito (sessionStorage) y actualizar UI
+      carrito = [];
+      try { sessionStorage.removeItem('carrito'); } catch(e){}
+      guardarCarrito();
+      actualizarContadorCarrito();
+
+      // Cerrar modal y redireccionar al inicio
+      closeCartModal();
+      window.location.href = 'index.html';
+    });
+  }
+}
+
+
 // abrir carrito al hacer click en el icono
 document.querySelectorAll('.icon-btn[aria-label="Ver carrito"]').forEach(btn => {
   btn.addEventListener('click', (e) => {
@@ -239,6 +331,15 @@ document.addEventListener('DOMContentLoaded', () => {
   // configurar handlers de búsqueda y actualizar contador
   setupSearchHandlers();
   actualizarContadorCarrito();
+  // enlazar botón de checkout dentro del modal
+  const cartCheckoutBtn = document.getElementById('cartCheckout');
+  if (cartCheckoutBtn) {
+    cartCheckoutBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      // Abrir la página de checkout en la misma pestaña
+      window.location.href = 'checkout.html';
+    });
+  }
 });
 
 // --- BÚSQUEDA CON SUGERENCIAS ---
@@ -518,10 +619,4 @@ if (menuBtn && navMenu) {
   });
 }
 
-// --- LIMPIAR CARRITO AL CERRAR LA PESTAÑA O EL NAVEGADOR ---
-window.addEventListener("beforeunload", (event) => {
-  if (!performance.getEntriesByType("navigation")[0].type.includes("reload")) {
-    // si NO fue una recarga, limpia el carrito (pestaña/navegador cerrado)
-    sessionStorage.removeItem("carrito");
-  }
-});
+

@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Checkout - ColorLive</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  </head>
+  <body>
+    <!-- Reutilizamos el header del sitio (puede ser copiado desde index.html) -->
+    <header class="site-header">
+      <div class="header-top-content">
+        <div class="header-left">
+          <a href="index.html" class="logo"><img src="images/logoTransparente1.png" alt="ColorLive"></a>
+        </div>
+        <div class="header-center">
+          <nav class="nav-menu">
+            <ul class="nav-list">
+              <li class="nav-item"><a href="index.html">Inicio</a></li>
+              <li class="nav-item"><a href="#">Nosotros</a></li>
+              <li class="nav-item"><a href="productos.html">Productos</a></li>
+              <li class="nav-item"><a href="#encontranos">Encontranos</a></li>
+            </ul>
+          </nav>
+        </div>
+        <div class="header-right">
+          <div class="header-actions">
+            <a href="index.html" class="btn-link">Seguir comprando</a>
+          </div>
+        </div>
+      </div>
+    </header>
+    
+  
+    <main class="checkout-page">
+      <h1>Finalizar compra</h1>
+      <div id="checkoutRoot"></div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-copy">© 2025 ColorLive — Todos los derechos reservados</div>
+    </footer>
+
+    <script src="checkout.js"></script>
+  </body>
+</html>
