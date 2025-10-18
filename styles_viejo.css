@@ -1,3 +1,4 @@
+
 :root{
   --accent: #5b21b6; /* morado vivo parecido a marca */
   --bg: #ffffff;
@@ -369,6 +370,7 @@ main{padding-top:90px}
 
 
 /* === SLIDER DE PRODUCTOS (3 por vista) === */
+/* === SLIDER DE PRODUCTOS (3 por vista) === */
 .productos-slider {
   max-width: 1200px;
   margin: 60px auto;
@@ -409,25 +411,17 @@ main{padding-top:90px}
   scrollbar-width: none; /* Para Firefox */
 }
 
-/* --- BASE UNIFICADA DE PRODUCT CARD --- */
 .producto-card {
+  flex: 0 0 calc(33.333% - 16px); /* 3 productos visibles */
   background: #fff;
-  border-radius: 15px; /* Usamos 15px que es el más legible */
-  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+  border-radius: 14px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
   position: relative;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  overflow: hidden; /* Añadido para unificar */
+  transition: transform 0.3s ease;
 }
 
 .producto-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15); /* Sombra unificada */
-}
-
-/* Modificador para el slider de la home */
-.slider-productos .producto-card {
-  /* Esto es lo único que era diferente */
-  flex: 0 0 calc(33.333% - 16px);
+  transform: translateY(-4px);
 }
 
 .producto-card img {
@@ -579,6 +573,18 @@ main{padding-top:90px}
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
   gap: 25px;
+}
+
+.producto-card {
+  background: #fff;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease;
+}
+
+.producto-card:hover {
+  transform: translateY(-5px);
 }
 
 .producto-info {
@@ -952,65 +958,68 @@ body.productos-page main {
 .btn-outline{background:transparent;border:2px solid var(--accent);color:var(--accent);padding:12px 18px;border-radius:999px;font-weight:700}
 
 
-/* ============================================== */
-/* === BLOQUE ÚNICO PARA MÓVILES (CONSOLIDADO) === */
-/* ============================================== */
-@media (max-width: 700px) {
-  /* === 1. RESET Y GENERALES === */
+
+/* Aggressive mobile size reduction to make UI smaller on phones */
+@media (max-width:700px){
   html { font-size: 14px; }
   body { font-size: 0.95rem; }
-  h1 { font-size: 28px; }
-  h2 { font-size: 20px; }
+  /* header */
+  .site-header{height:72px}
+  .header-top-content{padding:8px 12px}
+  .logo img{height:38px}
+  .search-box{padding:8px 40px 8px 10px;font-size:14px}
+  .menu-btn{display:block}
 
-  .btn-primary { padding: 10px 14px; border-radius: 10px; font-size: 15px; }
-  .btn-outline { padding: 8px 12px; font-size: 15px; }
+  /* banner */
+  .banner-container{height:180px}
+  .banner-slide img{object-fit:cover}
 
-  /* === 2. HEADER === */
-  .site-header { height: 72px; }
-  .header-top-content {
-    height: 72px;
-    padding: 8px 12px;
-    gap: 8px;
-  }
-  .header-left {
-    flex: 0 0 auto;
-    gap: 0; /* Controlado por el logo y botón */
-  }
-  .header-center {
-    flex: 0; /* No ocupa espacio */
-  }
-  .header-right {
-    flex: 1; /* Ocupa todo el espacio restante */
-    justify-content: flex-end; /* Alinea el carrito a la derecha */
-  }
-  .logo img { height: 38px; }
-  .logo { margin-left: 12px; } /* Separa el logo del botón */
+  /* product cards */
+  .producto-card img{height:160px}
+  .producto-info h3{font-size:16px}
+  .producto-info p{font-size:13px}
+  .precio{font-size:16px}
 
-  .menu-btn {
-    display: block;
-    padding: 10px; /* Aumenta área de click */
-    margin: -10px; /* Compensa el padding visualmente */
-  }
-  
-  /* Oculta la búsqueda y sus sugerencias en móvil */
-  .search-container { display: none; }
-  .search-suggestions { display: none; }
-  
-  /* Menú hamburguesa desplegable */
+  /* cart */
+  .cart-panel{width:100%}
+  .cart-item img{width:56px;height:56px}
+  .cart-item .meta h4{font-size:14px}
+
+  /* checkout */
+  .checkout-page{padding:14px;margin:20px auto}
+  .checkout-grid{gap:12px}
+  .checkout-item{grid-template-columns:56px 1fr 90px 64px 32px;padding:12px 0}
+  .checkout-form{padding:14px}
+  .checkout-total{font-size:16px}
+
+  /* suggestions */
+  .search-suggestions{width:calc(100% - 20px);left:10px;right:10px}
+  .product-suggestion img{width:44px;height:44px}
+  .product-suggestion .meta h4{font-size:13px}
+
+  /* general elements */
+  h1{font-size:28px}
+  h2{font-size:20px}
+  .btn-primary{padding:10px 14px;border-radius:10px;font-size:15px}
+  .btn-outline{padding:8px 12px;font-size:15px}
+
+  /* --- 1. ARREGLO DE HEADER Y NAVEGACIÓN --- */
   .header-center .nav-menu {
-    display: none;
+    display: none; /* Oculta el menú de escritorio */
     flex-direction: column;
     position: absolute;
-    top: 72px;
+    top: 72px; /* Debajo del header chico */
     left: 0;
     right: 0;
     background: #fdfdfd;
     box-shadow: 0 8px 16px rgba(0,0,0,0.1);
     z-index: 1000;
   }
-  .nav-menu.open { display: flex; }
+  .nav-menu.open {
+    display: flex; /* Muestra el menú al hacer clic en el botón hamburguesa */
+  }
   .header-center .nav-list {
-    flex-direction: column;
+    flex-direction: column; /* Apila los links */
     gap: 0;
     width: 100%;
     align-items: flex-start;
@@ -1022,7 +1031,7 @@ body.productos-page main {
     border-bottom: 1px solid #f0f0f0;
   }
   .has-dropdown .dropdown {
-    position: static;
+    position: static; /* Evita que el submenú "vuele" */
     display: none;
     box-shadow: none;
     border: none;
@@ -1030,90 +1039,170 @@ body.productos-page main {
     background: #f9f9f9;
     width: 100%;
   }
-  .has-dropdown.open .dropdown { display: block; }
-
-  /* === 3. PÁGINA DE INICIO (INDEX) === */
-  .banner-container { height: 180px; }
-  .banner-slide img { object-fit: cover; }
-  
-  /* Categorías en 2 columnas */
-  .categorias-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
+  .has-dropdown.open .dropdown {
+    display: block; /* Muestra submenú con JS */
   }
-  .categoria-item img { height: 140px; }
-  .categoria-texto { padding: 10px; }
-  .categoria-texto h3 { font-size: 16px; }
-  .categoria-texto p { font-size: 13px; margin-top: 2px; }
-
-  /* Slider de productos */
-  .slider-productos .producto-card {
-    flex: 0 0 70%;
-    scroll-snap-align: start;
+  .header-right {
+    flex-grow: 1; /* Permite que la búsqueda/carrito ocupen el espacio vacío */
   }
-  
-  /* Sección "Encontranos" */
-  .encontranos-contenido {
-    flex-direction: column;
-    gap: 20px;
+  .search-container {
+    flex-grow: 1; /* El contenedor de búsqueda se estira */
   }
-  .info-ubicacion { text-align: center; }
 
-  /* === 4. PÁGINA DE CATÁLOGO (PRODUCTOS) === */
+  /* --- 2. ARREGLO PÁGINA DE CATÁLOGO (productos.html) --- */
   .productos-container {
-    flex-direction: column;
-    padding: 20px 15px;
+    flex-direction: column; /* Apila los filtros y la lista */
+    padding: 20px 15px; /* Reduce el padding general */
     gap: 20px;
   }
   .filtros,
   .productos-lista {
-    width: 100%;
+    width: 100%; /* Ocupan el ancho completo */
   }
   .productos-lista {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr; /* 2 columnas de productos */
     gap: 15px;
   }
-  .producto-card img { height: 160px; }
-  .producto-info h3 { font-size: 16px; }
-  .producto-info p { font-size: 13px; }
-  .precio { font-size: 16px; }
 
-  /* === 5. PÁGINA DE DETALLE (PRODUCTO) === */
+  /* --- 3. ARREGLO PÁGINA DETALLE DE PRODUCTO (producto.html) --- */
   .detalle-producto {
-    padding-top: 100px;
+    padding-top: 100px; /* Menos espacio superior que en desktop */
     padding-bottom: 20px;
   }
   .contenedor-producto {
-    flex-direction: column;
-    width: 95%;
+    flex-direction: column; /* Apila la imagen y la info */
+    width: 95%; /* Usa casi todo el ancho */
     padding: 20px 15px;
     gap: 25px;
   }
   .info,
   .imagenes {
-    flex: 1;
+    flex: 1; /* Resetea el flex-basis de desktop */
     width: 100%;
   }
-  #img-principal { max-width: 100%; }
-
-  /* === 6. PÁGINA DE CHECKOUT === */
-  .checkout-page { padding: 14px; margin: 20px auto; }
-  .checkout-grid {
-    grid-template-columns: 1fr; /* Una sola columna */
+  #img-principal {
+    max-width: 100%; /* Asegura que la imagen no se desborde */
   }
+
+  /* --- 4. ARREGLO PÁGINA DE CHECKOUT (checkout.html) --- */
+  .checkout-grid {
+    grid-template-columns: 1fr; /* Apila resumen y formulario (una sola columna) */
+  }
+  /* La regla de 5 columnas que tenías para .checkout-item está rota. Esta la arregla: */
   .checkout-item {
     grid-template-columns: 60px 1fr auto; /* Imagen, Meta, Precio */
     gap: 12px;
     padding: 12px 0;
   }
-  .checkout-item .line-price { text-align: right; }
-  .checkout-form { padding: 14px; }
-  .checkout-total { font-size: 16px; }
+  .checkout-item .line-price {
+    text-align: right;
+  }
 
-  /* === 7. CARRITO MODAL === */
-  .cart-panel { width: 100%; }
-  .cart-item img { width: 56px; height: 56px; }
-  .cart-item .meta h4 { font-size: 14px; }
+  /* --- 5. ARREGLOS DE LA PÁGINA DE INICIO (index.html) --- */
+  .slider-productos .producto-card {
+    flex: 0 0 70%; /* Muestra 1.5 tarjetas en el slider, para que se vea que hay más */
+    scroll-snap-align: start;
+  }
+  .categorias-grid {
+    gap: 15px; /* Menos espacio entre categorías */
+  }
+  .categoria-item img {
+    height: 180px; /* Imágenes de categoría más chicas */
+  }
+  .encontranos-contenido {
+    flex-direction: column; /* Apila el mapa y la info de ubicación */
+    gap: 20px;
+  }
+  .info-ubicacion {
+    text-align: center; /* Centra la info de ubicación */
+  }
+
+  /* --- 1. ARREGLO DE HEADER (PARA IMAGEN 2) --- */
+
+/* Ajustamos los contenedores principales del header */
+.header-top-content {
+  gap: 8px; /* Reducimos el espacio entre logo, búsqueda y carrito */
+  height: 72px; /* <-- Esta es la línea que faltaba */
+}
+.header-left {
+  flex: 0 0 auto; /* El logo y menú hamburguesa no se encogen */
+}
+.header-center {
+  /* Le decimos al contenedor del menú central que no ocupe espacio */
+  flex: 0; 
+}
+.header-right {
+  /* 1. Le decimos al contenedor del carrito que crezca 
+     y ocupe todo el espacio sobrante */
+  flex: 1; 
+
+  /* 2. Le decimos que alinee su contenido (el carrito) 
+     al final, o sea, bien a la derecha */
+  justify-content: flex-end; 
+}
+.search-container {
+  flex: 1 1 auto; /* La barra de búsqueda se estira y se encoge */
+  min-width: 0;
+}
+.header-actions {
+  flex: 0 0 auto; /* El carrito no se encoge */
+}
+.logo img {
+  height: 38px; /* Esto ya lo tenías, pero asegúrate que siga */
+}
+
+/* --- 2. ARREGLO FOTOS CATEGORÍAS (PARA IMAGEN 1) --- */
+
+.categorias-grid {
+  /* Forzamos 2 columnas en lugar de 1 */
+  grid-template-columns: 1fr 1fr; 
+  gap: 15px; /* Un espacio más chico entre las tarjetas */
+}
+.categoria-item img {
+  /* Hacemos la imagen de categoría mucho más chica */
+  height: 140px; 
+}
+.categoria-texto {
+  padding: 10px; /* Menos espacio de texto sobre la imagen */
+}
+.categoria-texto h3 {
+  font-size: 16px; /* Achicamos el título de la categoría */
+}
+.categoria-texto p {
+  font-size: 13px; /* Achicamos la descripción */
+  margin-top: 2px;
+}
+/* --- OCULTAR BARRA DE BÚSQUEDA EN CELULAR --- */
+.search-container {
+  display: none;
+}
+}
+
+/* --- ARREGLO BOTÓN HAMBURGUESA Y LOGO FLOTANTE --- */
+
+.header-left {
+  /* Quitamos el 'gap' para controlarlo manualmente */
+  gap: 0;
+}
+
+.menu-btn {
+  /* 1. AGRANDAMOS EL ÁREA CLICKEABLE */
+  /* Esto hace que el botón sea "gordo" por dentro */
+  padding: 10px; 
+  
+  /* 2. COMPENSAMOS EL PADDING VISUALMENTE */
+  /* Esto "encoge" el espacio visual que ocupa el padding, 
+     pero el área clickeable SIGUE SIENDO GRANDE */
+  margin: -10px;
+}
+
+.logo {
+  /* 3. SEPARAMOS EL LOGO */
+  /* Creamos una separación clara entre el área 
+     clicable del botón y el logo */
+  margin-left: 12px;
+
+  
 }
 
 .metodo-pago {

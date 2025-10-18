@@ -485,9 +485,21 @@ document.addEventListener('click', function(e) {
 });
 
 // --- Header shrink on scroll ---
+// --- Header shrink on scroll ---
 const headerEl = document.querySelector('.site-header');
 let lastScroll = 0;
-window.addEventListener('scroll', () => {
+
+// Convertimos la lógica en una función reutilizable
+function handleHeaderScroll() {
+  
+  // 1. COMPROBAMOS EL ANCHO DE LA PANTALLA
+  if (window.innerWidth <= 700) {
+    // 2. Si es un celular, nos aseguramos que NUNCA tenga la clase
+    headerEl.classList.remove('header--small');
+    return; // Y no hacemos nada más
+  }
+
+  // 3. Si es desktop (más de 700px), aplicamos la lógica original
   const y = window.scrollY || window.pageYOffset;
   if (y > 60) {
     headerEl.classList.add('header--small');
@@ -495,7 +507,11 @@ window.addEventListener('scroll', () => {
     headerEl.classList.remove('header--small');
   }
   lastScroll = y;
-});
+}
+
+// 4. Ejecutamos la función tanto al hacer scroll como al cambiar el tamaño
+window.addEventListener('scroll', handleHeaderScroll);
+window.addEventListener('resize', handleHeaderScroll);
 
 // --- Dropdown toggle for touch / small screens ---
 document.querySelectorAll('.has-dropdown > a').forEach(anchor => {
