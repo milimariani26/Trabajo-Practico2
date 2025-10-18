@@ -66,7 +66,7 @@ function renderCheckoutPage(){
          </label>
         </div>
 
-    <<h4>Método de entrega</h4>
+    <h4>Método de entrega</h4>
   <label><input type="radio" name="entrega" value="local" checked> Retirar en el local</label><br>
   <label><input type="radio" name="entrega" value="envio"> Envío a domicilio</label>
   <div id="direccionCampos" class="direccion-oculta">
@@ -96,7 +96,19 @@ function renderCheckoutPage(){
       else cardFields.style.display = 'none';
     });
   });
+ // Mostrar campos de dirección solo si se elige "Envío a domicilio"
+    const entregaRadios = form.querySelectorAll('input[name="entrega"]');
+    const direccionCampos = form.querySelector('#direccionCampos');
 
+    entregaRadios.forEach(radio => {
+    radio.addEventListener("change", () => {
+        if (radio.value === "envio" && radio.checked) {
+            direccionCampos.style.display = "block";
+        } else {
+            direccionCampos.style.display = "none";
+        }
+    });
+    });
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const name = document.getElementById('cf-name')?.value?.trim();
@@ -136,7 +148,7 @@ if (entrega === 'envio') {
     alert('Compra realizada con éxito');
 // --- ENVIAR CORREO DE CONFIRMACIÓN ---
 const serviceID = "service_yy32ehe";   // tu Service ID
-const templateID = "template_kxhw4kw";   // tu Template ID
+const templateID = "template_pluvwpb";   // tu Template ID
 const publicKey = "aOMpAI6_MlRNFld0S";    // tu Public Key
 
 // preparar lista de productos
@@ -156,19 +168,7 @@ emailjs.send(serviceID, templateID, {
 }).catch((error) => {
   console.error("❌ Error al enviar el correo:", error);
 });
-    // Mostrar campos de dirección solo si se elige "Envío a domicilio"
-    const entregaRadios = form.querySelectorAll('input[name="entrega"]');
-    const direccionCampos = form.querySelector('#direccionCampos');
-
-    entregaRadios.forEach(radio => {
-    radio.addEventListener("change", () => {
-        if (radio.value === "envio" && radio.checked) {
-            direccionCampos.style.display = "block";
-        } else {
-            direccionCampos.style.display = "none";
-        }
-    });
-    });
+   
 
     // Vaciar carrito y redirigir
     try{ sessionStorage.removeItem('carrito'); }catch(e){}
