@@ -16,7 +16,7 @@ function shuffled(arr) {
   return a;
 }
 
-function mostrarProductos(categoria) {
+function mostrarCatalogo(categoria) {
   contenedor.innerHTML = "";
 
   const filtrados = categoria === "todos"
@@ -50,12 +50,12 @@ function mostrarProductos(categoria) {
 }
 
 
-  mostrarProductos(categoriaSeleccionada);
+  mostrarCatalogo(categoriaSeleccionada);
 
   botonesFiltro.forEach(btn => {
     btn.addEventListener("click", () => {
       categoriaSeleccionada = btn.dataset.categoria || "todos";
-      mostrarProductos(categoriaSeleccionada);
+      mostrarCatalogo(categoriaSeleccionada);
     });
   });
 });

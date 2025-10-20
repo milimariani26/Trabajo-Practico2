@@ -12,7 +12,7 @@ body{
   color:#111;
 }
 
-main{padding-top:90px}
+main{padding-top:120px}
 
 /* Header fijo en la parte superior */
 .site-header{
@@ -516,6 +516,7 @@ main{padding-top:90px}
   display: flex;
   gap: 40px;
   padding: 60px;
+  padding-top: 120px;
   background-color: #f7f7f7;
 }
 

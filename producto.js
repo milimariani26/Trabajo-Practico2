@@ -69,6 +69,7 @@ if (producto.descripcion && producto.descripcion.trim() !== "") {
     <div class="card-recomendado" onclick="window.location.href='producto.html?codigo=${p.codigo}'">
       <img src="images/${p.codigo}.jpg" alt="${p.producto}">
       <h4>${p.producto}</h4>
+      <p>${p.color && p.color !== "-" ? `<p>Color: ${p.color}</p>` : ""}
       ${p.descuento > 0 ? `<p class="precio-anterior">$${p.precio.toLocaleString()}</p>` : ""}
       <p class="precio">$${(p.precio - (p.precio * (p.descuento || 0) / 100)).toLocaleString()}</p>
     </div>
