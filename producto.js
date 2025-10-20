@@ -14,6 +14,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Mostrar datos del producto
   document.getElementById("nombre").textContent = producto.producto;
   document.getElementById("marca").textContent = `Marca: ${producto.marca}`;
+  const colorElement = document.getElementById("color");
+  if (producto.color && producto.color.trim() !== "" && producto.color.trim() !== "-") {
+    colorElement.textContent = `Color: ${producto.color}`;
+  } 
   document.getElementById("img-principal").src = `images/${producto.codigo}.jpg`;
 
   const precioContainer = document.getElementById("precio");
@@ -26,13 +30,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       
     }
   `;
-  // Descripción del producto
-  if (producto.descripcion && producto.descripcion.trim() !== "") {
-    const desc = document.createElement("p");
-    desc.classList.add("descripcion-producto");
-    desc.textContent = producto.descripcion;
+// Descripción del producto
+if (producto.descripcion && producto.descripcion.trim() !== "") {
+  const desc = document.createElement("p");
+  desc.classList.add("descripcion-producto");
+
+  // Reemplazamos " - " por un salto de línea y mantenemos el guion
+  const descFormateada = producto.descripcion.replaceAll(' - ', '<br>- ');
+  
+  // Usamos innerHTML para que el navegador entienda la etiqueta <br>
+  desc.innerHTML = descFormateada; 
+
   document.querySelector(".info").appendChild(desc);
 }
+
 
 
   // Control de cantidad
@@ -49,14 +60,23 @@ document.addEventListener("DOMContentLoaded", async () => {
   };
 
   // Productos recomendados
-  const similares = productos.filter(p => p.categoria === producto.categoria && p.codigo !== producto.codigo).slice(0, 4);
+  function tomar4Aleatorios(arr) {
+  const n = Math.min(4, arr.length);
+  const a = arr.slice();
+  for (let i = 0; i < n; i++) {
+    const j = i + Math.floor(Math.random() * (a.length - i));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a.slice(0, n);
+}
+  const recomendados = tomar4Aleatorios(productos.slice(0, productos.length));
   const contenedor = document.getElementById("grid-recomendados");
-  contenedor.innerHTML = similares.map(p => `
+  contenedor.innerHTML = recomendados.map(p => `
     <div class="card-recomendado" onclick="window.location.href='producto.html?codigo=${p.codigo}'">
       <img src="images/${p.codigo}.jpg" alt="${p.producto}">
       <h4>${p.producto}</h4>
       ${p.descuento > 0 ? `<p class="precio-anterior">$${p.precio.toLocaleString()}</p>` : ""}
-      <p class="precio">$${(p.precio - (p.precio * p.descuento / 100)).toLocaleString()}</p>
+      <p class="precio">$${(p.precio - (p.precio * (p.descuento || 0) / 100)).toLocaleString()}</p>
     </div>
   `).join("");
 });

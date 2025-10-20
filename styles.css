@@ -215,7 +215,7 @@ main{padding-top:90px}
 .cart-item .meta h4{margin:0;font-size:15px}
 .cart-item .meta p{margin:6px 0;color:#666;font-size:13px}
 .qty-controls{display:flex;align-items:center;gap:6px}
-.qty-controls button{width:30px;height:30px;border-radius:6px;border:1px solid #ddd;background:#fff;cursor:pointer}
+.qty-controls .qty-btn{width:30px;height:30px;border-radius:6px;border:1px solid #ddd;background:#fff;cursor:pointer}
 .cart-footer{display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid #eee}
 .cart-total{font-weight:700}
 .btn-primary{background:var(--accent);color:#fff;border:0;padding:10px 14px;border-radius:8px;cursor:pointer}
@@ -288,8 +288,10 @@ main{padding-top:90px}
 
 .next { right: 16px }
 .prev { left: 16px }
-.prev:hover, .next:hover { background-color: rgba(0,0,0,0.6); transform: scale(1.03) }
-
+.prev:hover, .next:hover { 
+  background-color: rgba(0,0,0,0.6); 
+  transform: translateY(-50%) scale(1.03); 
+}
 
 
 /* === SECCIÓN CATEGORÍAS EN INICIO === */
@@ -955,7 +957,7 @@ body.productos-page main {
 /* ============================================== */
 /* === BLOQUE ÚNICO PARA MÓVILES (CONSOLIDADO) === */
 /* ============================================== */
-@media (max-width: 700px) {
+@media (max-width: 960px) {
   /* === 1. RESET Y GENERALES === */
   html { font-size: 14px; }
   body { font-size: 0.95rem; }
@@ -1006,7 +1008,7 @@ body.productos-page main {
     right: 0;
     background: #fdfdfd;
     box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-    z-index: 1000;
+    z-index: 1300;
   }
   .nav-menu.open { display: flex; }
   .header-center .nav-list {
@@ -1157,4 +1159,47 @@ body.productos-page main {
 #direccionCampos label {
   display: block;
   margin-bottom: 8px;
+}
+
+/* ===== NOSOTROS ===== */
+.nosotros {
+  padding: 60px 20px;
+  background: #fff;
+}
+
+.nosotros-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr; /* imagen izquierda / texto derecha */
+  gap: 32px;
+  align-items: center;
+}
+
+.nosotros-media img {
+  width: 100%;
+  height: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.nosotros-texto h2 {
+  margin: 0 0 12px;
+  color: #6a1b9a;
+  font-size: 28px;
+}
+
+.nosotros-texto p {
+  color: #333;
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+/* Responsive: apilar en mobile */
+@media (max-width: 900px) {
+  .nosotros-wrapper {
+    grid-template-columns: 1fr;
+  }
 }

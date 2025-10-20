@@ -142,39 +142,50 @@ if (entrega === 'envio') {
   }
 }
 
-   
-
-    // Simular pago exitoso
-    alert('Compra realizada con éxito');
 // --- ENVIAR CORREO DE CONFIRMACIÓN ---
-const serviceID = "service_yy32ehe";   // tu Service ID
-const templateID = "template_pluvwpb";   // tu Template ID
-const publicKey = "aOMpAI6_MlRNFld0S";    // tu Public Key
+    const serviceID = "service_yy32ehe";
+    const templateID = "template_pluvwpb";
+    const publicKey = "aOMpAI6_MlRNFld0S";
 
-// preparar lista de productos
-const productList = carrito.map(p =>
-  `${p.producto} (${p.cantidad} x $${p.precio.toLocaleString()})`
-).join("\n");
+    // 1. Preparamos la lista de productos COMO UN ARRAY
+    const productList = carrito.map(p =>
+      `${p.producto} (${p.cantidad} x $${p.precio.toLocaleString()})`
+    );
 
-// inicializar emailjs
-emailjs.init(publicKey);
+    // 2. Inicializamos emailjs
+    emailjs.init(publicKey);
 
-emailjs.send(serviceID, templateID, {
-  user_name: name,
-  user_email: email,
-  product_list: productList
-}).then(() => {
-  console.log("✅ Correo enviado al comprador");
-}).catch((error) => {
-  console.error("❌ Error al enviar el correo:", error);
-});
-   
+    // 3. Enviamos el ARRAY y MANEJAMOS LA REDIRECCIÓN
+    emailjs.send(serviceID, templateID, {
+      user_name: name,
+      user_email: email,
+      product_list: productList
+    }).then(() => {
+      // --- ÉXITO ---
+      // El correo se envió, AHORA sí podemos
+      // mostrar el éxito y redirigir.
+      console.log("✅ Correo enviado al comprador");
+      alert('Compra realizada con éxito');
+      
+      // Vaciar carrito y redirigir
+      try { sessionStorage.removeItem('carrito'); } catch(e) {}
+      window.location.href = 'index.html';
 
-    // Vaciar carrito y redirigir
-    try{ sessionStorage.removeItem('carrito'); }catch(e){}
-    window.location.href = 'index.html';
-  });
-}
+    }).catch((error) => {
+      // --- FALLO ---
+      // El correo falló, avisamos al usuario y 
+      // (para este caso) igual lo dejamos avanzar.
+      console.error("❌ Error al enviar el correo:", error);
+      alert('Tu compra fue realizada, pero hubo un error al enviar el email de confirmación.');
+      
+      // Igual vaciamos el carrito y redirigimos
+      try { sessionStorage.removeItem('carrito'); } catch(e) {}
+      window.location.href = 'index.html';
+    });
+    
+  }); // Este es el cierre del form.addEventListener
+} // Este es el cierre de renderCheckoutPage()
+
 
 // inicializar
 window.addEventListener('DOMContentLoaded', renderCheckoutPage);
