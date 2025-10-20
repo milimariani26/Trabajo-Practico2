@@ -2,13 +2,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   const contenedor = document.querySelector(".productos-lista");
   const botonesFiltro = document.querySelectorAll(".filtros button");
 
-  // Detectar si se pasó una categoría desde otra página
   const params = new URLSearchParams(window.location.search);
   let categoriaSeleccionada = params.get("categoria") || "todos";
 
 const productos = await cargarProductos();
 
-// Mezcla uniforme (Fisher–Yates) sin mutar el array original
 function shuffled(arr) {
   const a = arr.slice();
   for (let i = a.length - 1; i > 0; i--) {
@@ -18,7 +16,6 @@ function shuffled(arr) {
   return a;
 }
 
-  // Función para renderizar productos
 function mostrarProductos(categoria) {
   contenedor.innerHTML = "";
 
@@ -31,7 +28,6 @@ function mostrarProductos(categoria) {
     return;
   }
 
-  // 👇 Mezclamos el orden de lo que se va a mostrar
   const lista = shuffled(filtrados);
 
   lista.forEach(p => {
@@ -56,7 +52,6 @@ function mostrarProductos(categoria) {
 
   mostrarProductos(categoriaSeleccionada);
 
-  // Filtro manual desde los botones laterales
   botonesFiltro.forEach(btn => {
     btn.addEventListener("click", () => {
       categoriaSeleccionada = btn.dataset.categoria || "todos";

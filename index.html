@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>ColorLive - Pinturería</title>
-    <!-- Enlazamos el archivo de estilos. Lo completaremos en el siguiente paso -->
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
@@ -15,10 +14,8 @@
       
 
       <div class="header-top-content">
-        <!-- Lado izquierdo: logo y (pronto) botón hamburger -->
         <div class="header-left">
           <button class="menu-btn" id="menuBtn" aria-label="Abrir menú">☰</button>
-          <!-- Logo de la empresa. Reemplaza src por tu imagen real -->
           <div class="logo">
             <a href="#inicio">
               <img src="images/logoTransparente1.png" alt="ColorLive - Pinturas y Revestimientos">
@@ -26,7 +23,6 @@
           </div>
         </div>
 
-        <!-- Barra de navegación principal (centro) -->
         <div class="header-center">
           <nav class="nav-menu" aria-label="Menú principal">
             <ul class="nav-list">
@@ -41,39 +37,30 @@
                   <li role="none"><a role="menuitem" href="productos.html?categoria=todos" >Todos los productos</a></li>
                 </ul>
               </li>
-              <!--<li class="nav-item"><a href="#colores">Colores</a></li>-->
               <li class="nav-item"><a href="#encontranos">Encontranos</a></li>
             </ul>
           </nav>
         </div>
 
-        <!-- Caja de búsqueda: el usuario escribe y se muestran sugerencias (derecha) -->
+        <!-- Caja de búsqueda\-->
         <div class="header-right">
           <div class="search-container">
-          <!-- El id 'searchInput' será usado por JavaScript para detectar escritura -->
           <input type="text" id="searchInput" class="search-box" placeholder="Buscar productos, marcas o códigos..." aria-label="Buscar productos">
           <button class="search-btn" aria-label="Buscar">
             <img src="images/lupa.png" alt="Buscar" width="18" height="18">
           </button>
-          <!-- Contenedor para las sugerencias dinámicas -->
           <div id="suggestions" class="search-suggestions" role="listbox" aria-label="Sugerencias de búsqueda"></div>
             </div>
-
-          <!-- Botones de acción: carrito y ubicación -->
           <div class="header-actions">
-            <!-- Carrito: el span con id 'cartCount' mostrará la cantidad de items -->
             <button class="icon-btn" onclick="mostrarCarrito()" aria-label="Ver carrito">
               <img src="images/carrito.png" alt="Carrito" class="icon-img">
               <i class="fa fa-shopping-cart"></i>
-              <!-- Por defecto vacío: no mostrar número hasta que haya items -->
               <span class="cart-count" id="cartCount"></span>
             </button>
           </div>
         </div>
       </div>
     </header>
-
-    <!-- Contenido de ejemplo para que puedas hacer scroll y ver el header fijo -->
     <main>
 
     <!-- Carrito (modal/drawer) -->
@@ -160,8 +147,6 @@
   
   <div class="slider-contenedor">
     <button class="btn-flecha btn-izquierda" id="btn-izquierda">‹</button>
-
-    <!-- Este div es el que tiene que desplazarse -->
     <div id="productos-container" class="slider-productos"></div>
 
     <button class="btn-flecha btn-derecha" id="btn-derecha">›</button>
@@ -170,15 +155,12 @@
 
 
     </main>
-
-    <!-- Enlazamos el script. Lo completaremos en el siguiente paso -->
   <section id="encontranos" class="encontranos">
   <h2>Encontranos</h2>
 
   <div class="encontranos-contenido">
     <!-- Mapa -->
     <div class="mapa">
-      <!-- Podés usar una imagen local o un mapa embebido -->
       <iframe 
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3284.906849434139!2d-58.50973232424615!3d-34.58171655737972!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95bcb03d6f6c1d63%3A0xc7a9d7d9c1b0a0a4!2sHip%C3%B3lito%20Yrigoyen%202480%2C%20Mart%C3%ADnez%2C%20Buenos%20Aires%201640!5e0!3m2!1ses!2sar!4v1700000000000!5m2!1ses!2sar" 
         width="100%" height="350" style="border:0;" 
@@ -212,7 +194,6 @@
     </div>
 
     <figure class="nosotros-media">
-      <!-- Reemplazá por tu imagen -->
       <img src="images/local.jpeg" alt="Nuestra pinturería" loading="lazy">
     </figure>
   </div>

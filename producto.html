@@ -11,9 +11,7 @@
 
   <header class="site-header">
     <div class="header-top-content">
-        <!-- Lado izquierdo: logo y (pronto) botón hamburger -->
         <div class="header-left">
-          <!-- Logo de la empresa. Reemplaza src por tu imagen real -->
           <div class="logo">
             <a href="index.html">
               <img src="images/logoTransparente1.png" alt="ColorLive - Pinturas y Revestimientos">
@@ -36,29 +34,22 @@
                   <li role="none"><a role="menuitem" href="productos.html?categoria=todos">Todos los productos</a></li>
                 </ul>
               </li>
-              <!--<li class="nav-item"><a href="#colores">Colores</a></li>-->
               <li class="nav-item"><a href="/index.html#encontranos">Encontranos</a></li>
             </ul>
           </nav>
         </div>
-        <!-- Caja de búsqueda: el usuario escribe y se muestran sugerencias (derecha) -->
         <div class="header-right">
           <div class="search-container">
-          <!-- El id 'searchInput' será usado por JavaScript para detectar escritura -->
           <input type="text" id="searchInput" class="search-box" placeholder="Buscar productos, marcas o códigos..." aria-label="Buscar productos">
           <button class="search-btn" aria-label="Buscar">
             <img src="images/lupa.png" alt="Buscar" width="18" height="18">
           </button>
-          <!-- Contenedor para las sugerencias dinámicas -->
           <div id="suggestions" class="search-suggestions" role="listbox" aria-label="Sugerencias de búsqueda"></div>
             </div>
 
-          <!-- Botones de acción: carrito y ubicación -->
           <div class="header-actions">
-            <!-- Carrito: el span con id 'cartCount' mostrará la cantidad de items -->
             <button class="icon-btn" onclick="mostrarCarrito()" aria-label="Ver carrito">
               <img src="images/carrito.png" alt="Carrito" class="icon-img">
-              <!-- Por defecto vacío: no mostrar número hasta que haya items -->
               <span class="cart-count" id="cartCount"></span>
             </button>
           </div>

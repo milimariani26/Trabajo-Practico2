@@ -2,12 +2,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const codigo = new URLSearchParams(window.location.search).get("codigo");
   if (!codigo) return;
 
-  // Usamos la función existente de script.js
   const productos = await cargarProductos();
   const producto = productos.find(p => p.codigo === codigo);
   if (!producto) return;
 
-  // Calcular descuento igual que en script.js
   const tieneDescuento = producto.descuento > 0;
   const precioFinal = producto.precio - (producto.precio * producto.descuento / 100);
 
@@ -35,16 +33,12 @@ if (producto.descripcion && producto.descripcion.trim() !== "") {
   const desc = document.createElement("p");
   desc.classList.add("descripcion-producto");
 
-  // Reemplazamos " - " por un salto de línea y mantenemos el guion
   const descFormateada = producto.descripcion.replaceAll(' - ', '<br>- ');
   
-  // Usamos innerHTML para que el navegador entienda la etiqueta <br>
   desc.innerHTML = descFormateada; 
 
   document.querySelector(".info").appendChild(desc);
 }
-
-
 
   // Control de cantidad
   const cantidad = document.getElementById("cantidad");

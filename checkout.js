@@ -1,5 +1,3 @@
-// checkout.js - renderiza la página de pago usando sessionStorage
-
 function formatMoney(n){
   return Number(n).toLocaleString();
 }
@@ -86,8 +84,6 @@ function renderCheckoutPage(){
   container.appendChild(right);
   root.innerHTML = '';
   root.appendChild(container);
-
-  // mostrar campos de tarjeta si se selecciona tarjeta
   const form = document.getElementById('checkoutFormPage');
   const cardFields = document.getElementById('cardFields');
   form.querySelectorAll('input[name="cf-pay"]').forEach(r => {
@@ -96,7 +92,6 @@ function renderCheckoutPage(){
       else cardFields.style.display = 'none';
     });
   });
- // Mostrar campos de dirección solo si se elige "Envío a domicilio"
     const entregaRadios = form.querySelectorAll('input[name="entrega"]');
     const direccionCampos = form.querySelector('#direccionCampos');
 
@@ -118,8 +113,6 @@ function renderCheckoutPage(){
       alert('Por favor completa tu nombre, email y selecciona un método de pago.');
       return;
     }
-
-    // Si eligió tarjeta, validar campos simples
     if (payMethod === 'tarjeta'){
       const num = document.getElementById('card-number')?.value?.trim();
       const exp = document.getElementById('card-exp')?.value?.trim();
@@ -130,7 +123,6 @@ function renderCheckoutPage(){
       }
     }
     
-    //si elijo envio a domicilio si no completas los campos no te deja finalizar la compra
     const entrega = form.querySelector('input[name="entrega"]:checked')?.value;
 if (entrega === 'envio') {
   const calle = document.getElementById('cf-calle')?.value?.trim();
@@ -147,23 +139,17 @@ if (entrega === 'envio') {
     const templateID = "template_pluvwpb";
     const publicKey = "aOMpAI6_MlRNFld0S";
 
-    // 1. Preparamos la lista de productos COMO UN ARRAY
     const productList = carrito.map(p =>
       `${p.producto} (${p.cantidad} x $${p.precio.toLocaleString()})`
     );
 
-    // 2. Inicializamos emailjs
     emailjs.init(publicKey);
 
-    // 3. Enviamos el ARRAY y MANEJAMOS LA REDIRECCIÓN
     emailjs.send(serviceID, templateID, {
       user_name: name,
       user_email: email,
       product_list: productList
     }).then(() => {
-      // --- ÉXITO ---
-      // El correo se envió, AHORA sí podemos
-      // mostrar el éxito y redirigir.
       console.log("✅ Correo enviado al comprador");
       alert('Compra realizada con éxito');
       
@@ -172,19 +158,15 @@ if (entrega === 'envio') {
       window.location.href = 'index.html';
 
     }).catch((error) => {
-      // --- FALLO ---
-      // El correo falló, avisamos al usuario y 
-      // (para este caso) igual lo dejamos avanzar.
       console.error("❌ Error al enviar el correo:", error);
       alert('Tu compra fue realizada, pero hubo un error al enviar el email de confirmación.');
       
-      // Igual vaciamos el carrito y redirigimos
       try { sessionStorage.removeItem('carrito'); } catch(e) {}
       window.location.href = 'index.html';
     });
     
-  }); // Este es el cierre del form.addEventListener
-} // Este es el cierre de renderCheckoutPage()
+  }); 
+} 
 
 
 // inicializar

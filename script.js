@@ -1,6 +1,5 @@
 // BASE DE DATOS DE PRODUCTOS
-// Estructura simple para que la búsqueda pueda funcionar sin backend
-let productos = []; // acá se van a guardar los productos del CSV
+let productos = []; 
 // === CARGAR PRODUCTOS DESDE CSV ===
 async function cargarProductos() {
   try {
@@ -74,13 +73,11 @@ function mostrarProductos(lista) {
 document.addEventListener("DOMContentLoaded", cargarProductos);
 
 
-// Referencias del DOM (se asignan cuando el DOM está listo)
+// Referencias del DOM 
 let suggestions = null;
 let cartCount = null;
 
 // === SISTEMA DE CARRITO (unificado) ===
-// Usamos sessionStorage para que el carrito sobreviva a recargas, pero se pierda
-// cuando el usuario cierra la pestaña/ventana (cumple el requisito pedido).
 let carrito = JSON.parse(sessionStorage.getItem("carrito")) || [];
 
 function guardarCarrito() {
@@ -95,13 +92,11 @@ function actualizarContadorCarrito() {
   const cartCountEl = document.getElementById("cartCount");
   if (!cartCountEl) return;
   const total = carrito.reduce((acc, item) => acc + (Number(item.cantidad) || 0), 0);
-  // si total es 0 dejamos el badge vacío para que CSS :empty lo oculte
   cartCountEl.textContent = total > 0 ? String(total) : '';
 }
 
 function agregarAlCarrito(producto, cantidad = 1) {
   if (!producto) return;
-  // soporta objetos con keys en minúsculas (desde CSV) o en mayúsculas (desde otras partes)
   const codigo = producto.codigo || producto.CODIGO || producto.codigo === 0 ? String(producto.codigo || producto.CODIGO) : null;
   if (!codigo) return;
 
@@ -129,7 +124,6 @@ function agregarAlCarrito(producto, cantidad = 1) {
 
 function mostrarCarrito() {
   if (!carrito || carrito.length === 0) {
-    // abrir modal vacío
     openCartModal();
     renderCartPanel();
     return;
@@ -137,8 +131,6 @@ function mostrarCarrito() {
   openCartModal();
   renderCartPanel();
 }
-
-/* ---- Cart modal UI ---- */
 const cartModal = document.getElementById('cartModal');
 const cartBackdrop = document.getElementById('cartBackdrop');
 const cartClose = document.getElementById('cartClose');
@@ -233,18 +225,14 @@ document.querySelectorAll('.icon-btn[aria-label="Ver carrito"]').forEach(btn => 
 
 // Inicialización relacionada con el DOM
 document.addEventListener('DOMContentLoaded', () => {
-  // asignar referencias dependientes del DOM
   suggestions = document.getElementById('suggestions');
   cartCount = document.getElementById('cartCount');
-  // configurar handlers de búsqueda y actualizar contador
   setupSearchHandlers();
   actualizarContadorCarrito();
-  // enlazar botón de checkout dentro del modal
   const cartCheckoutBtn = document.getElementById('cartCheckout');
   if (cartCheckoutBtn) {
     cartCheckoutBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      // Abrir la página de checkout en la misma pestaña
       window.location.href = 'checkout.html';
     });
   }
@@ -370,20 +358,13 @@ function mostrarSugerencias(items) {
   suggestions.appendChild(list);
 }
 
-// set up search handlers after products are loaded
-// Nota: mantenemos el setup de búsqueda en su propio listener más abajo
-
 function seleccionarProducto(p) {
-  // Agrega el producto usando la función unificada y cierra sugerencias
   agregarAlCarrito(p, 1);
   const searchInput = document.getElementById('searchInput');
   if (searchInput) searchInput.value = '';
   if (suggestions) suggestions.classList.remove('active');
   alert(`Agregaste al carrito:\n${p.producto} - $${(Number(p.precio)||0).toLocaleString()}`);
 }
-
-
-/* legacy actualizarContadorCarrito removed — use the unified implementation above */
 
 // Cerrar sugerencias al hacer click fuera
 document.addEventListener('click', function(e) {
@@ -393,21 +374,13 @@ document.addEventListener('click', function(e) {
 });
 
 // --- Header shrink on scroll ---
-// --- Header shrink on scroll ---
 const headerEl = document.querySelector('.site-header');
 let lastScroll = 0;
-
-// Convertimos la lógica en una función reutilizable
 function handleHeaderScroll() {
-  
-  // 1. COMPROBAMOS EL ANCHO DE LA PANTALLA
   if (window.innerWidth <= 960) {
-    // 2. Si es un celular, nos aseguramos que NUNCA tenga la clase
     headerEl.classList.remove('header--small');
-    return; // Y no hacemos nada más
+    return;
   }
-
-  // 3. Si es desktop (más de 700px), aplicamos la lógica original
   const y = window.scrollY || window.pageYOffset;
   if (y > 60) {
     headerEl.classList.add('header--small');
@@ -417,22 +390,18 @@ function handleHeaderScroll() {
   lastScroll = y;
 }
 
-// 4. Ejecutamos la función tanto al hacer scroll como al cambiar el tamaño
 window.addEventListener('scroll', handleHeaderScroll);
 window.addEventListener('resize', handleHeaderScroll);
 
-// --- Dropdown toggle for touch / small screens ---
 document.querySelectorAll('.has-dropdown > a').forEach(anchor => {
   anchor.addEventListener('click', function(e) {
     const parent = this.parentElement;
-    // Prevent jump/navigation on click for both mobile and desktop; toggle dropdown instead
     e.preventDefault();
     const open = parent.classList.toggle('open');
     this.setAttribute('aria-expanded', open ? 'true' : 'false');
   });
 });
 
-// Close dropdowns when clicking outside
 document.addEventListener('click', function(e) {
   document.querySelectorAll('.has-dropdown.open').forEach(item => {
     if (!item.contains(e.target)) {
@@ -444,17 +413,11 @@ document.addEventListener('click', function(e) {
 });
 
 // Smooth scroll with offset for internal anchor links (compensate header)
-// Smooth scroll with offset for internal anchor links (compensate header)
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', function(e) {
-    
-    // --- ESTA LÍNEA ES LA SOLUCIÓN ---
-    // Si el link es parte de un dropdown, no hagas scroll, solo deja que abra el menú.
     if (a.closest('.has-dropdown')) {
       return; 
     }
-    // --- FIN DE LA SOLUCIÓN ---
-
     const href = this.getAttribute('href');
     if (!href || href === '#') return;
     if (href.startsWith('#')) {
@@ -500,7 +463,7 @@ function prevSlide() {
 
 function autoSlides() {
   showSlides(slideIndex + 1);
-  slideTimer = setTimeout(autoSlides, 5000); // cambia cada 5s
+  slideTimer = setTimeout(autoSlides, 5000); 
 }
 
 function resetTimer() {
@@ -531,10 +494,8 @@ window.addEventListener("load", () => {
   const btnDer = document.getElementById("btn-derecha");
 
   if (!contenedor || !btnIzq || !btnDer) return;
-
-  // función que calcula el desplazamiento dinámicamente
   const moverSlider = (direccion) => {
-    const desplazamiento = contenedor.clientWidth * 0.9; // mueve casi una vista completa
+    const desplazamiento = contenedor.clientWidth * 0.9; 
     contenedor.scrollBy({ left: direccion * desplazamiento, behavior: "smooth" });
   };
 

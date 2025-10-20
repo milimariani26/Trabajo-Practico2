@@ -12,9 +12,6 @@ body{
   color:#111;
 }
 
-/* Hacemos espacio para el header fijo (ajusta si cambias altura) */
-/* Reducimos el espacio superior: ajustar si cambias la altura del header */
-/* Espacio superior para el header (ajustado al nuevo tamaño) */
 main{padding-top:90px}
 
 /* Header fijo en la parte superior */
@@ -24,7 +21,6 @@ main{padding-top:90px}
   background: #f4f4f6;
   box-shadow: 0 4px 20px rgba(0,0,0,0.12);
   z-index:1200;
-  /* Nuevo header más grande y llamativo */
   height:120px;
 }
 
@@ -38,8 +34,6 @@ main{padding-top:90px}
 .header-top-content{
   transition: height 240ms ease, padding 240ms ease;
 }
-
-/* Arrow indicator added via CSS to avoid layout shift */
 .has-dropdown > a {
   position: relative;
   padding-right: 28px; 
@@ -56,18 +50,17 @@ main{padding-top:90px}
   border-right: 2px solid #222;
   border-bottom: 2px solid #222;
   transform: rotate(45deg);
-  margin-left: 4px; /* separa la flecha del texto */
-  position: static; /* evita superposición con el texto */
+  margin-left: 4px; 
+  position: static; 
 }
 
 
-/* When header is small reduce sizes for children */
 /* === HEADER COMPACTO AL HACER SCROLL === */
 .site-header.header--small .header-top-content {
   height: 72px;
   padding: 0 28px;
   align-items: center;
-  gap: 8px; /* ajusta separación general */
+  gap: 8px; 
 }
 
 .site-header.header--small .header-left {
@@ -77,12 +70,12 @@ main{padding-top:90px}
 }
 
 .site-header.header--small .logo img {
-  height: 54px; /* tamaño intermedio, no tan chico */
+  height: 54px; 
   transition: all 0.25s ease;
 }
 
 .site-header.header--small .header-center .nav-list {
-  gap: 48px; /* separa más las palabras del menú */
+  gap: 48px; 
 }
 
 .site-header.header--small .nav-item a {
@@ -107,7 +100,6 @@ main{padding-top:90px}
 }
 
 
-/* allow opening dropdown via JS toggle (class 'open') */
 .has-dropdown.open .dropdown{display:block}
 
 .header-top-content{
@@ -116,30 +108,26 @@ main{padding-top:90px}
   display:flex;
   gap:18px;
   align-items:center;
-  justify-content:space-between; /* separa izquierda/centro/derecha */
-  height:120px; /* match header */
-  padding:0 24px; /* contenido centrado verticalmente */
+  justify-content:space-between; 
+  height:120px; 
+  padding:0 24px; 
 }
 
-/* Groups inside header: left (logo), center (nav), right (search+actions) */
 .header-left{flex:0 0 auto}
 .header-center{flex:1 1 auto;display:flex;justify-content:center}
 .header-right{flex:0 0 auto;display:flex;align-items:center;gap:12px}
 
-/* Navigation (main menu) */
 .nav-menu{display:block}
 .nav-list{display:flex;gap:36px;list-style:none;margin:0;padding:0;align-items:center}
 .nav-item a{color:inherit;text-decoration:none;padding:10px 8px;border-radius:6px;font-size:16px;font-weight:600}
 .nav-item a:hover{background:rgba(91,33,182,0.06);color:var(--accent)}
 
-/* Dropdown styles */
 .has-dropdown{position:relative}
 .has-dropdown .dropdown{
   position:absolute;top:calc(100% + 8px);left:0;background:#fff;border-radius:8px;padding:8px 0;box-shadow:0 8px 20px rgba(0,0,0,0.08);display:none;min-width:180px;z-index:1400
 }
 .has-dropdown:hover .dropdown{display:block}
 
-/* If header is small, the nav is closer to top; ensure dropdown doesn't overlap header */
 .site-header.header--small .has-dropdown .dropdown{top:calc(100% + 6px)}
 .dropdown li{list-style:none}
 .dropdown a{display:block;padding:8px 14px;color:#333;text-decoration:none}
@@ -148,7 +136,6 @@ main{padding-top:90px}
 
 
 .header-left{display:flex;align-items:center;gap:12px}
-/* Default logo size: increase to be more prominent */
 .logo img{display:block;height:72px;width:auto;object-fit:contain;transition:height 0.15s ease}
 
 
@@ -156,7 +143,7 @@ main{padding-top:90px}
 .search-container{flex:0 1 520px;max-width:520px;position:relative}
 .search-box{
   width:100%;
-  padding:12px 48px 12px 16px; /* más espaciosa */
+  padding:12px 48px 12px 16px;
   border-radius:12px;
   border:1px solid #e4e4e8;
   background:#fff;
@@ -169,12 +156,12 @@ main{padding-top:90px}
 
 /* Sugerencias debajo de la caja de búsqueda */
 .search-suggestions{
-  display:none; /* se activa con .active desde JS */
+  display:none; 
   position:absolute;
-  left:0; /* anchored to .search-container */
+  left:0; 
   top:calc(100% + 8px);
   width: max(360px, min(760px, 90vw));
-  background:#fff;border-radius:10px;padding:12px; /* más padding para secciones */
+  background:#fff;border-radius:10px;padding:12px; 
   box-shadow:0 12px 40px rgba(15,15,15,0.12);
   max-height:420px;overflow:auto;z-index:1300;
   border: 1px solid rgba(0,0,0,0.06);
@@ -199,7 +186,6 @@ main{padding-top:90px}
 
 /* Ocultar el badge del carrito cuando está vacío (sin contenido) */
 .cart-count:empty{display:none}
-/* contenido temporal */
 .temp-content{max-width:1200px;margin:40px auto;padding:0 20px}
 
 /* === Carrito (modal/drawer) === */
@@ -239,7 +225,7 @@ main{padding-top:90px}
 .banner-container {
   position: relative;
   max-width: 100%;
-  height: 500px; /* banner reducido */
+  height: 500px; 
   margin: 0 auto;
   overflow: hidden;
 }
@@ -375,7 +361,7 @@ main{padding-top:90px}
   max-width: 1200px;
   margin: 60px auto;
   position: relative;
-  padding: 0; /* sacar padding */
+  padding: 0; 
 }
 
 
@@ -407,28 +393,26 @@ main{padding-top:90px}
 }
 
 .slider-productos {
-  -ms-overflow-style: none; /* Para IE y Edge */
-  scrollbar-width: none; /* Para Firefox */
+  -ms-overflow-style: none; 
+  scrollbar-width: none; 
 }
 
 /* --- BASE UNIFICADA DE PRODUCT CARD --- */
 .producto-card {
   background: #fff;
-  border-radius: 15px; /* Usamos 15px que es el más legible */
+  border-radius: 15px; 
   box-shadow: 0 6px 16px rgba(0,0,0,0.1);
   position: relative;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  overflow: hidden; /* Añadido para unificar */
+  overflow: hidden; 
 }
 
 .producto-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15); /* Sombra unificada */
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15); 
 }
 
-/* Modificador para el slider de la home */
 .slider-productos .producto-card {
-  /* Esto es lo único que era diferente */
   flex: 0 0 calc(33.333% - 16px);
 }
 
@@ -613,7 +597,7 @@ main{padding-top:90px}
 
 
 body.productos-page main {
-  padding-top: 140px; /* ajusta según el alto del header */
+  padding-top: 140px; 
 }
 
 
@@ -625,7 +609,7 @@ body.productos-page main {
   align-items: center;
   background-color: var(--gris-claro, #f6f6f8);
   min-height: 100vh;
-  padding-top: 160px; /* para que no se superponga con el header */
+  padding-top: 160px; 
   padding-bottom: 60px;
 }
 
@@ -753,7 +737,7 @@ body.productos-page main {
   font-size: 0.95rem;
   line-height: 1.4;
   color: #444;
-  max-width: 400px; /* evita que se extienda demasiado */
+  max-width: 400px; 
 }
 
 /* --- Recomendados --- */
@@ -809,7 +793,6 @@ body.productos-page main {
   font-weight: 600;
 }
 
-/*FOOTER*/
 /* ===== FOOTER ===== */
 .footer {
   background-color: #f7f5fa;
@@ -953,10 +936,8 @@ body.productos-page main {
 .btn-primary{background:var(--accent);color:#fff;border:0;padding:14px 18px;border-radius:999px;cursor:pointer;font-weight:700}
 .btn-outline{background:transparent;border:2px solid var(--accent);color:var(--accent);padding:12px 18px;border-radius:999px;font-weight:700}
 
-
-/* ============================================== */
 /* === BLOQUE ÚNICO PARA MÓVILES (CONSOLIDADO) === */
-/* ============================================== */
+
 @media (max-width: 960px) {
   /* === 1. RESET Y GENERALES === */
   html { font-size: 14px; }
@@ -976,29 +957,26 @@ body.productos-page main {
   }
   .header-left {
     flex: 0 0 auto;
-    gap: 0; /* Controlado por el logo y botón */
+    gap: 0; 
   }
   .header-center {
-    flex: 0; /* No ocupa espacio */
+    flex: 0; 
   }
   .header-right {
-    flex: 1; /* Ocupa todo el espacio restante */
-    justify-content: flex-end; /* Alinea el carrito a la derecha */
+    flex: 1; 
+    justify-content: flex-end; 
   }
   .logo img { height: 38px; }
-  .logo { margin-left: 12px; } /* Separa el logo del botón */
-
+  .logo { margin-left: 12px; } 
   .menu-btn {
     display: block;
-    padding: 10px; /* Aumenta área de click */
-    margin: -10px; /* Compensa el padding visualmente */
+    padding: 10px; 
+    margin: -10px; 
   }
   
-  /* Oculta la búsqueda y sus sugerencias en móvil */
   .search-container { display: none; }
   .search-suggestions { display: none; }
   
-  /* Menú hamburguesa desplegable */
   .header-center .nav-menu {
     display: none;
     flex-direction: column;
@@ -1038,7 +1016,6 @@ body.productos-page main {
   .banner-container { height: 180px; }
   .banner-slide img { object-fit: cover; }
   
-  /* Categorías en 2 columnas */
   .categorias-grid {
     grid-template-columns: 1fr 1fr;
     gap: 15px;
@@ -1048,13 +1025,11 @@ body.productos-page main {
   .categoria-texto h3 { font-size: 16px; }
   .categoria-texto p { font-size: 13px; margin-top: 2px; }
 
-  /* Slider de productos */
   .slider-productos .producto-card {
     flex: 0 0 70%;
     scroll-snap-align: start;
   }
   
-  /* Sección "Encontranos" */
   .encontranos-contenido {
     flex-direction: column;
     gap: 20px;
@@ -1101,10 +1076,10 @@ body.productos-page main {
   /* === 6. PÁGINA DE CHECKOUT === */
   .checkout-page { padding: 14px; margin: 20px auto; }
   .checkout-grid {
-    grid-template-columns: 1fr; /* Una sola columna */
+    grid-template-columns: 1fr; 
   }
   .checkout-item {
-    grid-template-columns: 60px 1fr auto; /* Imagen, Meta, Precio */
+    grid-template-columns: 60px 1fr auto; 
     gap: 12px;
     padding: 12px 0;
   }
@@ -1171,7 +1146,7 @@ body.productos-page main {
   max-width: 1100px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1fr 1.2fr; /* imagen izquierda / texto derecha */
+  grid-template-columns: 1fr 1.2fr; 
   gap: 32px;
   align-items: center;
 }
